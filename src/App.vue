@@ -14,6 +14,32 @@
                 :index-producer='indexProducer'/>
 
     </div>
+    <div>
+      <ItemList listName="Seen movies"
+                @seen-button="changeSeenUnseenButton"
+                @show-all-movies="showSeenMovies"
+                @change-index="changeIndexMovie"
+                @show-producer="showProducer"
+                @delete-movie="deleteMovie"
+                :item-list="seenMovies"
+                :show-movie="showSeenMovie"
+                :index-movie="indexMovie"
+                :index-producer='indexProducer'/>
+
+    </div>
+    <div>
+      <ItemList listName="Uneen movies"
+                @seen-button="changeSeenUnseenButton"
+                @show-all-movies="showUnseenMovies"
+                @change-index="changeIndexMovie"
+                @show-producer="showProducer"
+                @delete-movie="deleteMovie"
+                :item-list="unseenMovies"
+                :show-movie="showUnseenMovie"
+                :index-movie="indexMovie"
+                :index-producer='indexProducer'/>
+
+    </div>
   </div>
 </template>
 
@@ -68,7 +94,16 @@ export default {
       showMovie: false,
       indexMovie: -1,
       indexProducer: -1,
-
+      showSeenMovie: false,
+      showUnseenMovie: false,
+    }
+  },
+  computed: {
+    seenMovies() {
+      return this.movies.filter(movie => movie.seen)
+    },
+    unseenMovies() {
+      return this.movies.filter(movie => !movie.seen)
     }
   },
   methods: {
@@ -77,6 +112,17 @@ export default {
     },
     showAllMovies() {
       this.showMovie = !this.showMovie
+      this.showSeenMovie = false;
+    },
+    showSeenMovies() {
+      this.showSeenMovie = !this.showSeenMovie
+      this.showMovie = false;
+      this.showUnseenMovie = false;
+    },
+    showUnseenMovies() {
+      this.showUnseenMovie = !this.showUnseenMovie
+      this.showMovie = false;
+      this.showSeenMovie = false;
     },
     changeIndexMovie(index) {
       this.indexMovie = this.indexMovie != index ? index : -1
