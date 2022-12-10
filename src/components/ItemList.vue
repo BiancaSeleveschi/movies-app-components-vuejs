@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h2 @click="showAllMovies"
-        :class="{  'bg-primary w-25 mx-auto rounded-3 p-2' : !showMovie}">
+    <h2 @click="showAllMovies" id="list-div" :style="cssVars"
+        :class="{  ' w-25 mx-auto rounded-3 p-2' : !showMovie}">
       {{ listName }}
     </h2>
     <div v-show="showMovie">
@@ -13,10 +13,13 @@
           <h4>Genre: {{ movie.genre }}</h4>
           <h5 @click="showProducer(index)"
               :class="[indexProducer === -1? 'fw-bold text-success' : ' movie.producer = fst-italic']">
-            Producer
-            <span v-show="indexProducer===index">
+            <span v-if="indexProducer===index ">
               {{ movie.producer }}
-            </span></h5>
+            </span>
+            <span v-else>
+                Producer
+            </span>
+          </h5>
           <p>Year:
             <span class='fw-bold'>{{ movie.year }}</span>
           </p>
@@ -34,7 +37,19 @@
 <script>
 export default {
   name: "ItemList",
-  props: ["itemList", "listName", 'showMovie', 'indexMovie', 'indexProducer'],
+  props: ["itemList", 'color', "listName", 'showMovie', 'indexMovie'],
+  data() {
+    return {
+      indexProducer: -1
+    }
+  },
+  computed: {
+    cssVars() {
+      return {
+        '--color': this.color
+      }
+    }
+  },
   methods: {
     changeSeenUnseenButton(index) {
       this.$emit('seen-button', index)
@@ -46,7 +61,11 @@ export default {
       this.$emit('change-index', index)
     },
     showProducer(index) {
-      this.$emit('show-producer', index)
+      //gasim elementu h dupa id
+      //sa ii setam innerText cu string vid
+      // let heading = document.findByid("adsfasdf")
+      // heading.innerHTML=""
+      this.indexProducer = this.indexProducer != index ? index : -1
     },
     deleteMovie(index) {
       this.$emit('delete-movie', index)
@@ -56,5 +75,7 @@ export default {
 </script>
 
 <style>
-
+#list-div {
+  /*background: var(--color);*/
+}
 </style>
